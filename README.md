@@ -1,8 +1,8 @@
 # Corona-Net: Diagnosis and Segmentation of the CoronavirusDisease 2019  
-### Introduction  
-
 ![Ground-truth masks for axial chest CT scans](./utils/main.PNG)  
 
+### Introduction  
+  
 Current baselines in biomedical image segmentation utilise fully-convolutional structures for the benefits of end-to-end trainability, size-invariance and efficiency. One such method is U-Net [1], a two-track contraction-expansion model which fuses features at different hierarchies with the objective of generating deep localisable features. Here, I introduce Corona-Net, a 3-part contribution dedicated to the classification, binary segmentation and multi-class segmentation of COVID-19. I first leverage the EfficientNet model [2] for COVID-19 diagnosis, achieving an accuracy over 90% (Model training still in progress). I then utilise and refine the U-Net architecture for both binary and 3-class (ground-glass, consolidation, pleural effusion) segmentation of COVID-19 symptoms, through inference on the 100-slice COVID-19 CT segmentation (chest axial CT) dataset dataset [3]. Through strong data augmentation and rigorous experimentation, I overcome the small dataset size (100) to achieve a Dice Loss of 74.34% and 61.60%. Further training and testing on 2 newly discovered datasets will be conducted to ensure model performance. Through Corona-Net, I aim to develop a reliable, visual-semantically balanced method for automatic COVID-19 diagnosis, in order to contribute to the fight against this pandemic.  
 
 ### Results
