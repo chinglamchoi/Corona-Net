@@ -8,12 +8,12 @@ Current baselines in biomedical image segmentation utilise fully-convolutional s
 ### Results
 1. Binary Segmentation
 
-| Dice Coefficient | Optimiser | Learning Rate |
-|------------------|-----------|---------------|
-| 0\.5570          | Adam      | 1e\-02        |
-| 0\.7068          | Adam      | 1e\-03        |
-| 0\.7434          | Adam      | 1e\-04        |
-| 0\.4229          | Adam      | 1e\-05        |
+| Dice Coefficient | Rand Loss | Optimiser | Learning Rate |
+|------------------|-----------|-----------|---------------|
+| 0\.5641          | 0\.2167   | Adam      | 1e\-02        |
+| 0\.7068          | 0\.1421   | Adam      | 1e\-03        |
+| 0\.7434          | 0\.1347   | Adam      | 1e\-04        |
+| 0\.4745          | 0\.1591   | Adam      | 1e\-05        |
   
 2. Multi-Class Segmentation
 
