@@ -131,6 +131,7 @@ if __name__ == "__main__":
 
         if epoch_loss < best_loss:
             valid = True
+            best_loss = epoch_loss
             print("New best test loss!")
         else:
             valid = False
