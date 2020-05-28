@@ -1,4 +1,5 @@
 import torch
+import torch.nn.functional as F
 import torch.utils.data as data
 import torchvision.transforms as transforms
 import torch.optim as optim
@@ -12,13 +13,23 @@ import argparse
 class CoronaNet(nn.Module):
     def __init__(self):
         super().__init__()
-        self.model = EfficientNet.from_pretrained("efficientnet-b5").to(device)
-        self.dp = nn.Dropout(p=0.4)
-        self.ln = nn.Linear(in_features=1000, out_features=1, bias=True)
+        self.model = EfficientNet.from_pretrained("efficientnet-b0")
+        #self.model = EfficientNet.from_name("efficientnet-b0")
+        #for param in self.model.parameters():
+            #param.requires_grad = True
+        self.dp1 = nn.Dropout(p=0.4)
+        #self.ln1 = nn.Linear(in_features=1000, out_features=500, bias=True)
+        self.ln1 = nn.Linear(in_features=1000, out_features=1, bias=True)
+        #self.dp2 = nn.Dropout(p=0.1)
+        #self.ln2 = nn.Linear(in_features=128, out_features=10, bias=True)
+        #self.dp3 = nn.Dropout(p=0.1)
+        #self.ln3 = nn.Linear(in_features=10, out_features=1, bias=True)
     def forward(self, x):
-        out = nn.functional.relu(self.model(x))
+        out = F.relu(self.model(x))
         out = out.view(out.size(0), -1)
-        out = self.ln(self.dp(out))
+        out = self.ln1(self.dp1(F.relu(out)))
+        #out = self.ln2(self.dp2(F.relu(out)))
+        #out = self.ln3(self.dp3(F.relu(out)))
         return out
 
 def run_cnn():
@@ -64,8 +75,8 @@ if __name__ == "__main__":
     weights_per_class = [1419.0/class_counts[i] for i in range(len(class_counts))] ##
     weights1 = [weights_per_class[train_lbs[i]] for i in range(1419)] ##
     sampler = data.sampler.WeightedRandomSampler(torch.DoubleTensor(weights1), 1419) ##
-    trainloader = data.DataLoader(trainset, batch_size=3, shuffle=False, sampler=sampler, num_workers=12) ##
-    testloader = data.DataLoader(testset, batch_size=8, shuffle=False, num_workers=12) ##
+    trainloader = data.DataLoader(trainset, batch_size=11, shuffle=False, sampler=sampler, num_workers=12) ##
+    testloader = data.DataLoader(testset, batch_size=10, shuffle=False, num_workers=12) ##
 
     a = "cuda:" + str(args.cuda)
     device = torch.device(a if torch.cuda.is_available() else "cpu")
@@ -112,9 +123,10 @@ if __name__ == "__main__":
             loss = criterion1(lb_hat, lb)
             epoch_loss += loss.item()
             optimizer.zero_grad()
+            loss.backward()
             optimizer.step()
-        train_loss.append(epoch_loss/473) ##
-        print("Epoch" + str(epoch) + " Train BCE Loss:", epoch_loss/473) ##
+        train_loss.append(epoch_loss/129) ##
+        print("Epoch" + str(epoch) + " Train BCE Loss:", epoch_loss/129) ##
 
         net = net.eval()
         epoch_loss = 0.0
@@ -125,7 +137,7 @@ if __name__ == "__main__":
                 lb_hat = net(img)
                 loss = criterion1(lb_hat, lb)
                 epoch_loss += loss.item()
-        epoch_loss /= 19.625
+        epoch_loss /= 15.7
         test_loss.append(epoch_loss)
         print("Epoch" + str(epoch) + " Test BCE Loss:", epoch_loss) ##
 
@@ -147,7 +159,7 @@ if __name__ == "__main__":
                 "optimizer": optimizer.state_dict(),
                 "alpha": alpha_
             }
-            path_ = "./models_class/" + args.opt + "_lr" + str(args.lr) + "/"
+            path_ = "./models_class/" + args.opt + "_lr" + str(args.lr) + "_stp" + str(args.stp) + "/" 
             try:
                 os.mkdir(path_)
             except:
