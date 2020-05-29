@@ -13,7 +13,7 @@ import argparse
 class CoronaNet(nn.Module):
     def __init__(self):
         super().__init__()
-        self.model = EfficientNet.from_pretrained("efficientnet-b0")
+        self.model = EfficientNet.from_pretrained("efficientnet-b1")
         #self.model = EfficientNet.from_name("efficientnet-b0")
         #for param in self.model.parameters():
             #param.requires_grad = True
@@ -54,6 +54,7 @@ def lr_change(alpha):
     for param_group in optimizer.param_groups:
         param_group["lr"] = alpha
     print("Lr changed to " + str(alpha))
+    return alpha
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
