@@ -1,6 +1,14 @@
-# User Guide  
-## Gist:  
-1. Clone repository  
-2. Binary classification: run Classification/main.py  
-3. Binary segmentation: run Binary_Segmentation/train_new.py  
-4. Multi-class segmentation: run Binary_Segmentation/train_new.py  
+# Super Easy User Guide  
+## Testing (after clonding repository):   
+1. Binary classification:  
+    > cd Classification
+    > python test.py -pre \[model name\]
+Available pre-trained models in Classification/models_6
+2. Binary segmentation: run Binary_Segmentation/train_new.py  
+    > cd Binary_Segmentation
+    > python train_new.py -pre \[model name\] -sv \[1: saves generated test masks in ./output/, 0: doesn't save masks\]
+Available pre-trained models in Classification/models_6
+3. Multi-class segmentation: run Binary_Segmentation/train_new.py  
+    > cd Binary_Segmentation
+    > python train_new.py -pre \[model name\] -sv \[1: saves generated test masks in ./output/, 0: doesn't save masks\]
+Available pre-trained models in Classification/models_6
