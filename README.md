@@ -11,8 +11,8 @@ Current baselines in biomedical image segmentation utilise fully-convolutional s
 | Model               | 1- BCE Loss | Optimiser | Learning Rate |
 |---------------------|-------------|-----------|---------------|
 | Efficient-Net-b0    | 0\.9251     | Adam      | 1e\-05        |
-| Efficient-Net-b1    | 0.\9400     | Adam      | 1e\-05        |
-| Efficient-Net-b2    | 0.\9096     | Adam      | 1e\-05        |  
+| Efficient-Net-b1    | 0\.9400     | Adam      | 1e\-05        |
+| Efficient-Net-b2    | 0\.9096     | Adam      | 1e\-05        |  
   
 2. Binary Segmentation
 
