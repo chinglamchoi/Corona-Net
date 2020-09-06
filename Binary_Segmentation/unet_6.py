@@ -9,43 +9,51 @@ class UNet(nn.Module):
         super().__init__()
         features = init_features
         self.encoder1 = UNet._block(in_channels, features, name="enc1")
-        #self.bn1 = nn.BatchNorm2d(32)
+
         self.pool1 = nn.MaxPool2d(kernel_size=2, stride=2)
         self.dp1 = nn.Dropout(inplace=False)
         self.encoder2 = UNet._block(features, features * 2, name="enc2")
-        #self.bn2 = nn.BatchNorm2d(64)
+
         self.pool2 = nn.MaxPool2d(kernel_size=2, stride=2)
         self.dp2 = nn.Dropout(inplace=False)
         self.encoder3 = UNet._block(features*2, features*4, name="enc3")
-        #self.bn3 = nn.BatchNorm2d(128)
+
         self.pool3 = nn.MaxPool2d(kernel_size=2, stride=2)
         self.dp3 = nn.Dropout(inplace=False)
         self.encoder4 = UNet._block(features*4, features*8, name="enc4")
-        #self.bn4 = nn.BatchNorm2d(256)
+
         self.pool4 = nn.MaxPool2d(kernel_size=2, stride=2)
         self.dp4 = nn.Dropout(inplace=False)
         self.encoder5 = UNet._block(features*8, features*16, name="enc5")
+        
         self.pool5 = nn.MaxPool2d(kernel_size=2, stride=2)
         self.dp5 = nn.Dropout(inplace=False)
         self.encoder6 = UNet._block(features*16, features*32, name="enc6")
+        
         self.pool6 = nn.MaxPool2d(kernel_size=2, stride=2)
         self.dp6 = nn.Dropout(inplace=False)
         self.bottleneck = UNet._block(features*32, features*64, name="bottleneck")
+        
         self.upconv6 = nn.ConvTranspose2d(features*64, features*32, kernel_size=2, stride=2)
         self.decoder6 = UNet._block(features*64, features*32, name="dec6")
         self.dp66 = nn.Dropout(inplace=False)
+        
         self.upconv5 = nn.ConvTranspose2d(features*32, features*16, kernel_size=2, stride=2)
         self.decoder5 = UNet._block(features*32, features*16, name="dec5")
         self.dp55 = nn.Dropout(inplace=False)
+        
         self.upconv4 = nn.ConvTranspose2d(features*16, features*8, kernel_size=2, stride=2)
         self.decoder4 = UNet._block(features*16, features*8, name="dec4")
         self.dp44 = nn.Dropout(inplace=False)
+        
         self.upconv3 = nn.ConvTranspose2d(features*8, features*4, kernel_size=2, stride=2)
         self.decoder3 = UNet._block(features*8, features*4, name="dec3")
         self.dp33 = nn.Dropout(inplace=False)
+        
         self.upconv2 = nn.ConvTranspose2d(features*4, features*2, kernel_size=2, stride=2)
         self.decoder2 = UNet._block(features*4, features*2, name="dec2")
         self.dp22 = nn.Dropout(inplace=False)
+        
         self.upconv1 = nn.ConvTranspose2d(features*2, features, kernel_size=2, stride=2)
         self.decoder1 = UNet._block(features*2, features, name="dec1")
         self.conv = nn.Conv2d(in_channels=features, out_channels=out_channels, kernel_size=1)
@@ -65,7 +73,6 @@ class UNet(nn.Module):
         dec5 = torch.cat((dec5, enc5), dim=1)
         dec5 = self.dp55(self.decoder5(dec5))
         dec4 = self.upconv4(dec5)
-        #dec4 = self.bn44(self.upconv4(bottleneck))
         dec4 = torch.cat((dec4, enc4), dim=1)
         dec4 = self.dp44(self.decoder4(dec4))
         dec3 = self.upconv3(dec4)
