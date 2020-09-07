@@ -6,17 +6,14 @@ import torchvision
 from torchvision import transforms as transforms
 import numpy as np
 import os
-from skimage.segmentation import find_boundaries
-#from skimage.metrics import adapted_rand_error
-from sklearn.metrics import adjusted_rand_score
-#from loss import DiceLoss
+# from sklearn.metrics import adjusted_rand_score
 from skimage import io
 import unet_6
 import unet
 import torch.nn as nn
 
-from sklearn.metrics import roc_curve, auc
-from sklearn.metrics import roc_auc_score
+# from sklearn.metrics import roc_curve, auc
+# from sklearn.metrics import roc_auc_score
 
 
 class Covid(data.Dataset):
@@ -36,7 +33,7 @@ def DiceLoss(a,b):
     a = a.view(-1)
     b = b.view(-1)
     intersection = (a*b).sum()
-    return ((2. * intersection + smooth) / (a.sum() + b.sum() + smooth))
+    return 1- ((2. * intersection + smooth) / (a.sum() + b.sum() + smooth))
 
 def RandLoss(a,b):
     a = (a >= 0.5).float()
