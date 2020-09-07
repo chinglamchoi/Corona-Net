@@ -1,13 +1,14 @@
+# Directly using Dice Loss might yield better results
+
 import torch
 import torch.utils.data as data
 import torchvision
 from torchvision import transforms as transforms
 import numpy as np
 import os
-#import unet_4
 import unet_6
 import unet
-from sklearn.metrics import adjusted_rand_score
+# from sklearn.metrics import adjusted_rand_score
 
 from skimage import io
 import torch.nn as nn
@@ -44,7 +45,7 @@ def DiceLoss(a,b):
     return 1 - ((2. * intersection + smooth) / (a.sum() + b.sum() + smooth))
 
 def RandLoss(a,b):
-    a = (a>0.5).float()
+    a = (a>=0.5).float()
     a = a.cpu().numpy().flatten()
     b = b.cpu().numpy().flatten()
     c = adjusted_rand_score(a,b)
@@ -60,45 +61,30 @@ class UNet2(nn.Module):
         out = self.outc1(x)
         out = self.outc2(out.view(out.size(0), -1))
         return x, out
-"""
-class FocalLoss(nn.Module):
-    def __init__(self, gamma=0, eps=1e-7):
-        super().__init__()
-        self.gamma = gamma
-        self.eps = eps
-    def forward(self, inputt, target):
-        logit = torch.sigmoid(inputt)
-        logit = logit.clamp(self.eps, 1. - self.eps)
-        loss = -1 * target * torch.log(logit)
-        loss = loss * (1 - logit) ** self.gamma # focal loss
-        return loss.sum()
-"""
+    
+# def hook_feature(module, input, output):
+#     feature_blobs.append(output.cpu().data.numpy())
 
-def hook_feature(module, input, output):
-    feature_blobs.append(output.cpu().data.numpy())
+# def returnCAM(feature_conv, weight):
+#     output_cam = []
+#     for i in range(len(feature_conv)):
+#         print(weight.shape)
+#         _ = weight.dot(feature_conv[i, :, :, :].reshape(3, 512*512))
+#         _ = _.reshape(3, 512, 512)
+#         _ = torch.from_numpy(_)
+#         output_cam.append(_)
+#     return torch.stack(output_cam)
 
-def returnCAM(feature_conv, weight):
-    output_cam = []
-    for i in range(len(feature_conv)):
-        print(weight.shape)
-        _ = weight.dot(feature_conv[i, :, :, :].reshape(3, 512*512))
-        _ = _.reshape(3, 512, 512)
-        _ = torch.from_numpy(_)
-        output_cam.append(_)
-    return torch.stack(output_cam)
+# def weight_init(m):
+#     if type(m) == nn.Linear:
+#         #nn.init.xavier_uniform(m.weight)
+#         m.weight.data.uniform_(0.0, 0.0)
+#         m.bias.data.fill_(0)
 
-def weight_init(m):
-    if type(m) == nn.Linear:
-        #nn.init.xavier_uniform(m.weight)
-        m.weight.data.uniform_(0.0, 0.0)
-        m.bias.data.fill_(0)
-
-def run_cnn2():
-    return UNet2()
+# def run_cnn2():
+#     return UNet2()
 
 if __name__ == "__main__":
-    #mean, std = [-402.0083926882452], [481.1704205180789] 601
-    #mean, std = [-377.6907247987177], [474.93976583918584]
 
     parser = argparse.ArgumentParser()
     parser.add_argument("-pre", metavar="PRE", type=str, default=None, dest="pre")
@@ -113,7 +99,6 @@ if __name__ == "__main__":
     parser.add_argument("-stp", metavar="STP", type=int, default=100, dest="stp")
     parser.add_argument("-sam", metavar="SAM", type=bool, default=False, dest="sam")
     parser.add_argument("-ver", metavar="V", type=int, default=1, dest="ver")
-    #{1: default 5 encoder unet.py, 4: 4 encoders unet_4.py}
     args = parser.parse_args()
 
     train_imgs, train_masks, test_imgs, test_masks = np.load("train_imgs_1aug.npy"), np.load("train_masks_1aug.npy"), np.load("test_imgs_1.npy"), np.load("test_masks_1.npy")
@@ -134,8 +119,6 @@ if __name__ == "__main__":
     a = "cuda:" + str(args.cuda)
     device = torch.device(a if torch.cuda.is_available() else "cpu")
     criterion1 = nn.BCEWithLogitsLoss().to(device)
-    #criterion1 = nn.Sigmoid().to(device)
-    #criterion2 = FocalLoss().to(device)
     if args.mul:
         net1 = unet.UNet() if args.ver == 1 else unet_6.UNet()
     else:
