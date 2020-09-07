@@ -33,7 +33,7 @@ Current baselines in biomedical image segmentation utilise fully-convolutional s
 | 0\.5001          | 0\.2565   | Adam      | 1e\-05        |
   
 ### Credits  
-[1] O. Ronneberger, P. Fischer, and T. Brox.  U-Net:Convolutional  Networks  for  Biomedical  ImageSegmentation. INMICCAI, 2015.
+[1] O. Ronneberger, P. Fischer, and T. Brox.  U-Net:Convolutional  Networks  for  Biomedical  ImageSegmentation. INMICCAI, 2015.  
 [2] M. Tan and Q. V. Le. EfficientNet: Rethink-ing Model Scaling for Convolutional Neural Net-works In ICML, 2019.  
 [3] Medical Segmentation.com  COVID-19 CT seg-mentation dataset, 2020.  
 [4] M. Buda, A. Saha, and M. A. Mazurowski. Association of genomic subtypes of lower-grade gliomas with shape features automatically extracted by a deep learning algorithm. In Computers in Biology and Medicine, 2019.
