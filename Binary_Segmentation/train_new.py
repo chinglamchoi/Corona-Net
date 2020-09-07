@@ -1,3 +1,5 @@
+# sometimes training with Dice Loss directly yields better results
+
 import torch
 import torch.utils.data as data
 import torchvision
@@ -44,7 +46,7 @@ def DiceLoss(a,b):
     return 1- ((2. * intersection + smooth) / (a.sum() + b.sum() + smooth))
 
 def RandLoss(a,b):
-    a = (a>0.5).float()
+    a = (a>=0.5).float()
     a = a.cpu().numpy().flatten()
     b = b.cpu().numpy().flatten()
     c = adjusted_rand_score(a,b)
