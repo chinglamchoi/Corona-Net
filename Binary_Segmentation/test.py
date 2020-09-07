@@ -64,7 +64,6 @@ if __name__ == "__main__":
     parser.add_argument("-stp", metavar="STP", type=int, default=100, dest="stp")
     parser.add_argument("-sam", metavar="SAM", type=bool, default=False, dest="sam")
     parser.add_argument("-ver", metavar="V", type=int, default=1, dest="ver")
-    #{1: default 5 encoder unet.py, 4: 4 encoders unet_4.py}
     args = parser.parse_args()
 
     test_imgs, test_masks = np.load("test_imgs_1.npy"), np.load("test_masks_1.npy")
@@ -97,5 +96,5 @@ if __name__ == "__main__":
             mask_pred.to("cpu")
             torchvision.utils.save_image(mask_pred, "mask_pred/" + args.pre + "/" + str(countt) + ".jpg")
             countt += 1
-    print("Dice Accuracy:", tot_val/20)
+    print("Dice Loss:", tot_val/20)
     print("Rand Loss:", tot_rand/20)
