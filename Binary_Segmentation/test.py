@@ -4,10 +4,9 @@ import torchvision
 from torchvision import transforms as transforms
 import numpy as np
 import os
-#import unet_4
 import unet_6
 import unet
-from sklearn.metrics import adjusted_rand_score
+# from sklearn.metrics import adjusted_rand_score
 
 from skimage import io
 import torch.nn as nn
