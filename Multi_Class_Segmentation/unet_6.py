@@ -91,8 +91,3 @@ class UNet(nn.Module):
 
 def run_cnn():
     return UNet()
-"""
-a = torch.ones(1, 1, 512, 512)
-m = run_cnn()
-m(a)
-"""
